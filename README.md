@@ -205,13 +205,8 @@ Este proyecto es un prototipo experimental con fines de aprendizaje, desarrollo,
 
 ## Capturas
 
-> Agrega aquí capturas reales del proyecto para dejar el repositorio más visual y profesional.
-
-Ejemplo:
-
-- Screenshot principal
-- Demo de reconocimiento de gesto
-- Captura del menú radial
+<img width="1080" height="1496" alt="image" src="https://github.com/user-attachments/assets/51d55349-0b2f-4e64-961c-1442005efc45" />
+<img width="705" height="691" alt="image" src="https://github.com/user-attachments/assets/253b9d71-f597-4484-9d7f-5fadf0e91083" />
 
 ## Autor
 
