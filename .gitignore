@@ -1,15 +1,85 @@
+# Gradle
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+
+# IntelliJ / Android Studio
 *.iml
-.gradle
-/local.properties
+.idea/
+.idea/**
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# Kotlin / Java
+*.class
+*.log
+*.ctxt
+hs_err_pid*
+
+# OS / editor noise
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+Thumbs.db
+*.swp
+*.swo
+
+# Android generated
+/captures/
+.externalNativeBuild/
+.cxx/
+app/.cxx/
+
+# Signing / secrets
+*.jks
+*.keystore
+*.pem
+*.p12
+*.key
+*.crt
+
+# Misc
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Gradle wrapper cache (keep wrapper jar only)
+.gradle/
+**/.gradle/
+
+# Kotlin build files
+.kotlin/
+
+# Local test / temp
+/tmp/
+*.tmp
+*.temp
+
+# VS Code settings
+.vscode/
+
+# NDK / native builds
+obj/
+libs/
+jniLibs/
+
+# Ignore generated docs or screenshots if not intentionally tracked
+# docs/images/
+# screenshots/
+
+# Keep git itself
+!.gitignore
+!.gitattributes
+!.gitmodules
+
+# Do not track local device settings
+*.orig
+*.rej
+*.bak
