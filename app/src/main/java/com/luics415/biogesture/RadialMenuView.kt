@@ -3,7 +3,10 @@ package com.luics415.biogesture
 import android.content.Context
 import android.graphics.*
 import android.view.View
+import com.luics415.biogesture.menu.MenuLevelId
+import com.luics415.biogesture.menu.RadialMenuCatalog
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.sin
 
 class RadialMenuView(context: Context) : View(context) {
@@ -11,6 +14,11 @@ class RadialMenuView(context: Context) : View(context) {
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val paintSelection = Paint(Paint.ANTI_ALIAS_FLAG)
     private val paintThumb = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintSelectionFill = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintProgress = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintDeadZone = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paintLine = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val menuRect = RectF()
 
     private var options = listOf<String>()
     private var activeSector = -1
@@ -18,54 +26,57 @@ class RadialMenuView(context: Context) : View(context) {
     private var menuCY = 0f
     private var currentThumbX = 0f
     private var currentThumbY = 0f
+    private var requestedRadius: Float? = null
+    private var deadZoneRadius = 0f
+    private var dwellProgress = 0f
+    private var selectionArmed = true
+    private val catalog = RadialMenuCatalog.DEFAULT
 
     // Color Azul Pastel solicitado
-    private val pastelBlue = Color.parseColor("#B6D0E2")
+    private val pastelBlue = Color.rgb(182, 208, 226)
 
     init {
         textPaint.color = Color.WHITE
-        textPaint.textSize = 32f
+        textPaint.textSize = dp(13f)
         textPaint.textAlign = Paint.Align.CENTER
         textPaint.typeface = Typeface.DEFAULT_BOLD
         textPaint.setShadowLayer(5f, 0f, 0f, Color.BLACK)
 
-        paintBack.color = Color.parseColor("#CC000000")
+        paintBack.color = Color.argb(204, 0, 0, 0)
         paintBack.style = Paint.Style.FILL
 
         paintSelection.color = pastelBlue
         paintSelection.style = Paint.Style.STROKE
-        paintSelection.strokeWidth = 20f
+        paintSelection.strokeWidth = dp(7f)
 
         paintThumb.color = pastelBlue
         paintThumb.style = Paint.Style.FILL
+
+        paintSelectionFill.color = pastelBlue
+        paintSelectionFill.alpha = 60
+        paintSelectionFill.style = Paint.Style.FILL
+
+        paintProgress.color = Color.WHITE
+        paintProgress.style = Paint.Style.STROKE
+        paintProgress.strokeCap = Paint.Cap.ROUND
+        paintProgress.strokeWidth = dp(4f)
+
+        paintDeadZone.color = Color.argb(95, 182, 208, 226)
+        paintDeadZone.style = Paint.Style.FILL
+
+        paintLine.color = Color.GRAY
+        paintLine.strokeWidth = dp(1.5f)
     }
 
-    fun openMenu(level: String, x: Float, y: Float) {
+    fun openMenu(level: MenuLevelId, x: Float, y: Float) {
         menuCX = x
         menuCY = y
         currentThumbX = x
         currentThumbY = y
 
-        options = when(level) {
-            "PRINCIPAL" -> listOf("CONFIG", "EDIT", "WEB", "MEDIA", "PLAY", "VOLUME", "NAV", "BACK")
-
-            "CONFIG" -> listOf("AJUSTES", "PERMISOS", "GESTOS", "NULL", "NULL", "NULL", "NULL", "VOLVER")
-
-            "EDIT" -> listOf("COPIAR", "PEGAR", "TODO", "CORTAR", "NULL", "NULL", "NULL", "VOLVER")
-
-            "WEB" -> listOf("ATRAS", "ADELANTE", "SCROLL UP", "SCROLL DN", "NUEVA T", "RECARGAR", "CERRAR T", "VOLVER")
-
-            // MENU MEDIA ACTUALIZADO PARA YOUTUBE
-            "MEDIA" -> listOf("PLAY/PAUSE", "SIGUIENTE", "ANTERIOR", "NULL", "FULLSCREEN", "ADELAN 10s", "ATRAS 10s", "VOLVER")
-
-            "PLAY" -> listOf("PLAY", "PAUSE", "VOLVER", "NULL", "NULL", "NULL", "NULL", "NULL")
-
-            "VOLUME" -> listOf("SUBIR", "BAJAR", "MUTE", "NULL", "NULL", "NULL", "NULL", "VOLVER")
-
-            "NAV" -> listOf("ATRAS", "INICIO", "RECIENTES", "NOTIF", "NULL", "NULL", "NULL", "VOLVER")
-
-            else -> listOf("1", "2", "3", "4", "5", "6", "7", "VOLVER")
-        }
+        options = catalog.definition(level).items.map { it.label }
+        activeSector = -1
+        dwellProgress = 0f
         invalidate()
     }
 
@@ -87,30 +98,59 @@ class RadialMenuView(context: Context) : View(context) {
         return ""
     }
 
+    fun setInteractionState(deadZoneRadius: Float, dwellProgress: Float, selectionArmed: Boolean) {
+        this.deadZoneRadius = deadZoneRadius.coerceAtLeast(0f)
+        this.dwellProgress = dwellProgress.coerceIn(0f, 1f)
+        this.selectionArmed = selectionArmed
+        invalidate()
+    }
+
+    fun sectorCount(): Int = options.size.coerceAtLeast(1)
+
+    fun setMenuRadius(radius: Float) {
+        requestedRadius = radius.coerceAtLeast(dp(72f))
+        invalidate()
+    }
+
+    fun menuRadius(): Float {
+        requestedRadius?.let { return it }
+        val availableSide = min(width.takeIf { it > 0 } ?: resources.displayMetrics.widthPixels,
+            height.takeIf { it > 0 } ?: resources.displayMetrics.heightPixels)
+        return min(dp(280f), availableSide * 0.42f).coerceAtLeast(dp(112f))
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (options.isEmpty()) return
 
-        val radius = 300f
+        val radius = menuRadius()
         canvas.drawCircle(menuCX, menuCY, radius, paintBack)
 
-        val rect = RectF(menuCX - radius, menuCY - radius, menuCX + radius, menuCY + radius)
-        val sweepAngle = 360f / 8f
+        paintDeadZone.alpha = if (selectionArmed) 42 else 118
+        canvas.drawCircle(menuCX, menuCY, deadZoneRadius, paintDeadZone)
 
-        for (i in 0 until 8) {
+        menuRect.set(menuCX - radius, menuCY - radius, menuCX + radius, menuCY + radius)
+        val sweepAngle = 360f / sectorCount()
+
+        for (i in options.indices) {
             val startAngle = (i * sweepAngle) - 90 - (sweepAngle / 2)
 
             if (i == activeSector) {
                 paintSelection.style = Paint.Style.STROKE
-                canvas.drawArc(rect, startAngle, sweepAngle, false, paintSelection)
-
-                val paintFill = Paint()
-                paintFill.color = pastelBlue
-                paintFill.alpha = 60
-                canvas.drawArc(rect, startAngle, sweepAngle, true, paintFill)
+                canvas.drawArc(menuRect, startAngle, sweepAngle, false, paintSelection)
+                canvas.drawArc(menuRect, startAngle, sweepAngle, true, paintSelectionFill)
+                if (dwellProgress > 0f) {
+                    canvas.drawArc(
+                        menuRect,
+                        startAngle,
+                        sweepAngle * dwellProgress,
+                        false,
+                        paintProgress,
+                    )
+                }
             }
 
-            if (i < options.size && options[i] != "NULL") {
+            if (i < options.size) {
                 val angleRad = Math.toRadians(((i * sweepAngle) - 90).toDouble())
                 val tx = menuCX + (radius * 0.7f) * cos(angleRad).toFloat()
                 val ty = menuCY + (radius * 0.7f) * sin(angleRad).toFloat()
@@ -119,8 +159,9 @@ class RadialMenuView(context: Context) : View(context) {
             }
         }
 
-        canvas.drawCircle(currentThumbX, currentThumbY, 15f, paintThumb)
-        val paintLine = Paint().apply { color = Color.GRAY; strokeWidth = 3f }
+        canvas.drawCircle(currentThumbX, currentThumbY, dp(5f), paintThumb)
         canvas.drawLine(menuCX, menuCY, currentThumbX, currentThumbY, paintLine)
     }
+
+    private fun dp(value: Float): Float = value * resources.displayMetrics.density
 }

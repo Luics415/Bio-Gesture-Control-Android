@@ -38,6 +38,8 @@ app/.cxx/
 # Signing / secrets
 *.jks
 *.keystore
+keystore.properties
+local-signing/
 *.pem
 *.p12
 *.key
@@ -59,6 +61,7 @@ app/.cxx/
 
 # Local test / temp
 /tmp/
+/release/
 *.tmp
 *.temp
 

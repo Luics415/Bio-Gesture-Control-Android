@@ -1,23 +1,50 @@
-# Third-Party Notices
+# Avisos de terceros
 
-## MediaPipe
+BioGesture Control Android incorpora bibliotecas y modelos de terceros. Este documento no sustituye sus licencias originales.
 
-This project uses MediaPipe Tasks Vision for hand landmark detection.
+## Google MediaPipe Tasks Vision
 
-MediaPipe is licensed under the Apache License, Version 2.0.
+- Componente: `com.google.mediapipe:tasks-vision:0.10.26.1`
+- Uso: detección de los 21 landmarks de una mano.
+- Modelo empaquetado: `app/src/main/assets/hand_landmarker.task`
+- Licencia: Apache License 2.0
+- Proyecto: https://github.com/google-ai-edge/mediapipe
 
-You can find the Apache License 2.0 text here:
+Copyright de Google y de los colaboradores de MediaPipe. El modelo y la biblioteca conservan sus avisos y condiciones originales.
 
-https://www.apache.org/licenses/LICENSE-2.0
+## AndroidX y CameraX
 
-### Attribution notice
+- Componentes: Core KTX, AppCompat, Camera Core, Camera2, Lifecycle y View.
+- Uso: compatibilidad Android, cámara frontal, análisis de imagen y ciclo de vida.
+- Licencia: Apache License 2.0
+- Proyecto: https://github.com/androidx/androidx
 
-Google MediaPipe is used as a third-party library in this project.
+Copyright de The Android Open Source Project.
 
-### Project copyright notice
+## Material Components for Android
 
-Copyright © 2026 Luics415. All rights reserved.
+- Componente: `com.google.android.material:material`
+- Uso: tarjetas, botones, selectores, tema y componentes visuales.
+- Licencia: Apache License 2.0
+- Proyecto: https://github.com/material-components/material-components-android
 
-The original conceptual idea, implementation, architecture, and content of this repository are the intellectual property of Luics415.
+Copyright de Google y de sus colaboradores.
 
-This file is provided only as an attribution and compliance notice for third-party dependencies.
+## Kotlin
+
+- Componentes: plugin y biblioteca estándar de Kotlin.
+- Uso: lenguaje y tiempo de ejecución.
+- Licencia: Apache License 2.0
+- Proyecto: https://github.com/JetBrains/kotlin
+
+Copyright de JetBrains s.r.o. y colaboradores.
+
+## Texto de la licencia
+
+El texto íntegro de Apache License 2.0 está disponible en [LICENSE](LICENSE).
+
+## Obra original
+
+Copyright © 2026 Luics415.
+
+La licencia del proyecto permite usar, modificar y distribuir la obra conforme a Apache License 2.0. Deben conservarse los avisos de copyright, licencia, atribución y cambios exigidos por dicha licencia.
