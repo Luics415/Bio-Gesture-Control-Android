@@ -15,11 +15,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     timeout-minutes: 35
-    env:
-      ORG_GRADLE_PROJECT_BIOGESTURE_STORE_FILE: ${{ runner.temp }}/biogesture-release.jks
-      ORG_GRADLE_PROJECT_BIOGESTURE_STORE_PASSWORD: ${{ secrets.BIOGESTURE_STORE_PASSWORD }}
-      ORG_GRADLE_PROJECT_BIOGESTURE_KEY_ALIAS: ${{ secrets.BIOGESTURE_KEY_ALIAS }}
-      ORG_GRADLE_PROJECT_BIOGESTURE_KEY_PASSWORD: ${{ secrets.BIOGESTURE_KEY_PASSWORD }}
 
     steps:
       - name: Checkout tag
@@ -40,14 +35,22 @@ jobs:
         shell: bash
         env:
           SIGNING_KEY_BASE64: ${{ secrets.BIOGESTURE_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.BIOGESTURE_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.BIOGESTURE_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.BIOGESTURE_KEY_PASSWORD }}
         run: |
-          if [[ -z "$SIGNING_KEY_BASE64" || -z "$ORG_GRADLE_PROJECT_BIOGESTURE_STORE_PASSWORD" || -z "$ORG_GRADLE_PROJECT_BIOGESTURE_KEY_ALIAS" || -z "$ORG_GRADLE_PROJECT_BIOGESTURE_KEY_PASSWORD" ]]; then
+          if [[ -z "$SIGNING_KEY_BASE64" || -z "$STORE_PASSWORD" || -z "$KEY_ALIAS" || -z "$KEY_PASSWORD" ]]; then
             echo "Faltan los secrets de firma requeridos." >&2
             exit 1
           fi
-          echo "$SIGNING_KEY_BASE64" | base64 --decode > "$ORG_GRADLE_PROJECT_BIOGESTURE_STORE_FILE"
+          echo "$SIGNING_KEY_BASE64" | base64 --decode > "$RUNNER_TEMP/biogesture-release.jks"
 
       - name: Test and build signed release
+        env:
+          ORG_GRADLE_PROJECT_BIOGESTURE_STORE_FILE: ${{ runner.temp }}/biogesture-release.jks
+          ORG_GRADLE_PROJECT_BIOGESTURE_STORE_PASSWORD: ${{ secrets.BIOGESTURE_STORE_PASSWORD }}
+          ORG_GRADLE_PROJECT_BIOGESTURE_KEY_ALIAS: ${{ secrets.BIOGESTURE_KEY_ALIAS }}
+          ORG_GRADLE_PROJECT_BIOGESTURE_KEY_PASSWORD: ${{ secrets.BIOGESTURE_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
           ./gradlew testDebugUnitTest lintDebug assembleRelease
