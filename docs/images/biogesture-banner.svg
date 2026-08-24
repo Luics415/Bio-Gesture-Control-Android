@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">BioGesture Control Android</title>
+  <desc id="desc">Control natural por gestos con MediaPipe y Android</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123A52"/>
+      <stop offset="0.55" stop-color="#071522"/>
+      <stop offset="1" stop-color="#040C14"/>
+    </linearGradient>
+    <linearGradient id="cursor" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#BCE8FF"/>
+      <stop offset="1" stop-color="#58E6C1"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="420" rx="34" fill="url(#bg)"/>
+  <circle cx="1080" cy="70" r="210" fill="#70CBFF" opacity="0.06"/>
+  <circle cx="1140" cy="350" r="260" fill="#58E6C1" opacity="0.05"/>
+  <g opacity="0.18" stroke="#70CBFF" fill="none">
+    <path d="M850 85L930 125L1005 75L1090 135L1150 95"/>
+    <path d="M890 200L970 165L1040 225L1120 180"/>
+    <circle cx="850" cy="85" r="6" fill="#58E6C1"/><circle cx="930" cy="125" r="6" fill="#58E6C1"/>
+    <circle cx="1005" cy="75" r="6" fill="#58E6C1"/><circle cx="1090" cy="135" r="6" fill="#58E6C1"/>
+    <circle cx="1150" cy="95" r="6" fill="#58E6C1"/><circle cx="890" cy="200" r="6" fill="#58E6C1"/>
+    <circle cx="970" cy="165" r="6" fill="#58E6C1"/><circle cx="1040" cy="225" r="6" fill="#58E6C1"/>
+    <circle cx="1120" cy="180" r="6" fill="#58E6C1"/>
+  </g>
+  <g transform="translate(92 76)" filter="url(#glow)">
+    <path d="M10 10L250 128L88 250Z" fill="url(#cursor)" stroke="#1688C8" stroke-width="13" stroke-linejoin="round"/>
+    <path d="M38 40L210 128L91 218Z" fill="#BCE8FF" opacity="0.72"/>
+    <g fill="#0D5CBD">
+      <circle cx="102" cy="82" r="18"/>
+      <path d="M94 99H110V166C129 161 143 147 150 128L165 138C154 169 131 184 102 186C73 184 50 169 39 138L54 128C61 147 75 161 94 166Z"/>
+      <rect x="59" y="116" width="94" height="14" rx="4"/>
+    </g>
+  </g>
+  <g font-family="Segoe UI, Roboto, Arial, sans-serif">
+    <text x="405" y="145" fill="#F4FAFF" font-size="59" font-weight="750">BioGesture Control</text>
+    <text x="408" y="198" fill="#70CBFF" font-size="27" font-weight="600">ANDROID · VISIÓN · ACCESIBILIDAD</text>
+    <text x="408" y="250" fill="#B2C7D6" font-size="24">Control natural por gestos, procesado localmente.</text>
+    <g transform="translate(408 292)" font-size="18" font-weight="650">
+      <rect width="150" height="42" rx="21" fill="#15354A" stroke="#31556C"/>
+      <text x="75" y="27" text-anchor="middle" fill="#58E6C1">VERSIÓN 3.0.0</text>
+      <rect x="166" width="165" height="42" rx="21" fill="#15354A" stroke="#31556C"/>
+      <text x="248" y="27" text-anchor="middle" fill="#F4FAFF">ANDROID 10+</text>
+      <rect x="347" width="190" height="42" rx="21" fill="#15354A" stroke="#31556C"/>
+      <text x="442" y="27" text-anchor="middle" fill="#F4FAFF">100% EN EL EQUIPO</text>
+    </g>
+  </g>
+</svg>

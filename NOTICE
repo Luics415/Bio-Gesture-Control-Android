@@ -1,0 +1,14 @@
+BioGesture Control Android
+Copyright 2026 Luics415
+
+This product is licensed under the Apache License, Version 2.0.
+
+BioGesture Control uses Google MediaPipe, AndroidX CameraX, Material Components
+for Android, Kotlin, and other AndroidX libraries. Their respective copyright
+notices and license terms remain the property of their authors. See
+THIRD_PARTY_NOTICES.md for details.
+
+The BioGesture Control name, original visual identity, documentation,
+architecture, gesture design, and original source contributions are authored
+by Luics415. The Apache License grants the permissions described in LICENSE
+while preserving these copyright and attribution notices.

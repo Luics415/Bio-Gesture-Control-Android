@@ -1,0 +1,60 @@
+name: Reporte de funcionamiento
+description: Documenta un problema reproducible de visión, gestos, instalación o interfaz.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Gracias por ayudar. No adjuntes información privada visible en la pantalla.
+  - type: input
+    id: version
+    attributes:
+      label: Versión de BioGesture
+      placeholder: 3.0.0
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Dispositivo y Android
+      placeholder: Vivo V2314, Android 15
+    validations:
+      required: true
+  - type: dropdown
+    id: orientation
+    attributes:
+      label: Orientación
+      options: [Vertical, Horizontal izquierda, Horizontal derecha, Ambas]
+    validations:
+      required: true
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Perfil
+      options: [12 FPS, 20 FPS, 30 FPS, Reposo]
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos exactos
+      description: Describe desde la activación hasta el fallo.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado observado
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidencia y condiciones
+      description: Iluminación, distancia, mano, aplicación destino y captura/video sin datos privados.
